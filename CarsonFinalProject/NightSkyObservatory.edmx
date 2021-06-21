@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="NightSkyObservatoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Fall">
+          <Key>
+            <PropertyRef Name="FallID" />
+          </Key>
+          <Property Name="FallID" Type="int" Nullable="false" />
+          <Property Name="Fall" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Meteorite">
+          <Key>
+            <PropertyRef Name="MeteoriteID" />
+          </Key>
+          <Property Name="MeteoriteID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Classification" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mass" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="FallID" Type="int" Nullable="false" />
+          <Property Name="YearID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UFO">
+          <Key>
+            <PropertyRef Name="UFOID" />
+          </Key>
+          <Property Name="UFOID" Type="int" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Shape" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="YearID" Type="int" Nullable="false" />
+          <Property Name="Duration" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Year">
+          <Key>
+            <PropertyRef Name="YearID" />
+          </Key>
+          <Property Name="YearID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Meteorite_Fall">
+          <End Role="Fall" Type="Self.Fall" Multiplicity="1" />
+          <End Role="Meteorite" Type="Self.Meteorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fall">
+              <PropertyRef Name="FallID" />
+            </Principal>
+            <Dependent Role="Meteorite">
+              <PropertyRef Name="FallID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meteorite_Year">
+          <End Role="Year" Type="Self.Year" Multiplicity="1" />
+          <End Role="Meteorite" Type="Self.Meteorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Year">
+              <PropertyRef Name="YearID" />
+            </Principal>
+            <Dependent Role="Meteorite">
+              <PropertyRef Name="YearID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UFO_Year">
+          <End Role="Year" Type="Self.Year" Multiplicity="1" />
+          <End Role="UFO" Type="Self.UFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Year">
+              <PropertyRef Name="YearID" />
+            </Principal>
+            <Dependent Role="UFO">
+              <PropertyRef Name="YearID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NightSkyObservatoryModelStoreContainer">
+          <EntitySet Name="Fall" EntityType="Self.Fall" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Meteorite" EntityType="Self.Meteorite" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UFO" EntityType="Self.UFO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Year" EntityType="Self.Year" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Meteorite_Fall" Association="Self.FK_Meteorite_Fall">
+            <End Role="Fall" EntitySet="Fall" />
+            <End Role="Meteorite" EntitySet="Meteorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meteorite_Year" Association="Self.FK_Meteorite_Year">
+            <End Role="Year" EntitySet="Year" />
+            <End Role="Meteorite" EntitySet="Meteorite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UFO_Year" Association="Self.FK_UFO_Year">
+            <End Role="Year" EntitySet="Year" />
+            <End Role="UFO" EntitySet="UFO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NightSkyObservatoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Fall">
+          <Key>
+            <PropertyRef Name="FallID" />
+          </Key>
+          <Property Name="FallID" Type="Int32" Nullable="false" />
+          <Property Name="Fall1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Meteorites" Relationship="Self.FK_Meteorite_Fall" FromRole="Fall" ToRole="Meteorite" />
+        </EntityType>
+        <EntityType Name="Meteorite">
+          <Key>
+            <PropertyRef Name="MeteoriteID" />
+          </Key>
+          <Property Name="MeteoriteID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Classification" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Mass" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="FallID" Type="Int32" Nullable="false" />
+          <Property Name="YearID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Fall" Relationship="Self.FK_Meteorite_Fall" FromRole="Meteorite" ToRole="Fall" />
+          <NavigationProperty Name="Year" Relationship="Self.FK_Meteorite_Year" FromRole="Meteorite" ToRole="Year" />
+        </EntityType>
+        <EntityType Name="UFO">
+          <Key>
+            <PropertyRef Name="UFOID" />
+          </Key>
+          <Property Name="UFOID" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Shape" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YearID" Type="Int32" Nullable="false" />
+          <Property Name="Duration" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Year" Relationship="Self.FK_UFO_Year" FromRole="UFO" ToRole="Year" />
+        </EntityType>
+        <EntityType Name="Year">
+          <Key>
+            <PropertyRef Name="YearID" />
+          </Key>
+          <Property Name="YearID" Type="Int32" Nullable="false" />
+          <Property Name="Year1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Meteorites" Relationship="Self.FK_Meteorite_Year" FromRole="Year" ToRole="Meteorite" />
+          <NavigationProperty Name="UFOes" Relationship="Self.FK_UFO_Year" FromRole="Year" ToRole="UFO" />
+        </EntityType>
+        <Association Name="FK_Meteorite_Fall">
+          <End Role="Fall" Type="Self.Fall" Multiplicity="1" />
+          <End Role="Meteorite" Type="Self.Meteorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fall">
+              <PropertyRef Name="FallID" />
+            </Principal>
+            <Dependent Role="Meteorite">
+              <PropertyRef Name="FallID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Meteorite_Year">
+          <End Role="Year" Type="Self.Year" Multiplicity="1" />
+          <End Role="Meteorite" Type="Self.Meteorite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Year">
+              <PropertyRef Name="YearID" />
+            </Principal>
+            <Dependent Role="Meteorite">
+              <PropertyRef Name="YearID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UFO_Year">
+          <End Role="Year" Type="Self.Year" Multiplicity="1" />
+          <End Role="UFO" Type="Self.UFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Year">
+              <PropertyRef Name="YearID" />
+            </Principal>
+            <Dependent Role="UFO">
+              <PropertyRef Name="YearID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NightSkyObservatoryEntitiesConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Falls" EntityType="Self.Fall" />
+          <EntitySet Name="Meteorites" EntityType="Self.Meteorite" />
+          <EntitySet Name="UFOes" EntityType="Self.UFO" />
+          <EntitySet Name="Years" EntityType="Self.Year" />
+          <AssociationSet Name="FK_Meteorite_Fall" Association="Self.FK_Meteorite_Fall">
+            <End Role="Fall" EntitySet="Falls" />
+            <End Role="Meteorite" EntitySet="Meteorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Meteorite_Year" Association="Self.FK_Meteorite_Year">
+            <End Role="Year" EntitySet="Years" />
+            <End Role="Meteorite" EntitySet="Meteorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UFO_Year" Association="Self.FK_UFO_Year">
+            <End Role="Year" EntitySet="Years" />
+            <End Role="UFO" EntitySet="UFOes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NightSkyObservatoryModelStoreContainer" CdmEntityContainer="NightSkyObservatoryEntitiesConnection">
+          <EntitySetMapping Name="Falls">
+            <EntityTypeMapping TypeName="NightSkyObservatoryModel.Fall">
+              <MappingFragment StoreEntitySet="Fall">
+                <ScalarProperty Name="FallID" ColumnName="FallID" />
+                <ScalarProperty Name="Fall1" ColumnName="Fall" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Meteorites">
+            <EntityTypeMapping TypeName="NightSkyObservatoryModel.Meteorite">
+              <MappingFragment StoreEntitySet="Meteorite">
+                <ScalarProperty Name="MeteoriteID" ColumnName="MeteoriteID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Classification" ColumnName="Classification" />
+                <ScalarProperty Name="Mass" ColumnName="Mass" />
+                <ScalarProperty Name="FallID" ColumnName="FallID" />
+                <ScalarProperty Name="YearID" ColumnName="YearID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UFOes">
+            <EntityTypeMapping TypeName="NightSkyObservatoryModel.UFO">
+              <MappingFragment StoreEntitySet="UFO">
+                <ScalarProperty Name="UFOID" ColumnName="UFOID" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Shape" ColumnName="Shape" />
+                <ScalarProperty Name="YearID" ColumnName="YearID" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Years">
+            <EntityTypeMapping TypeName="NightSkyObservatoryModel.Year">
+              <MappingFragment StoreEntitySet="Year">
+                <ScalarProperty Name="YearID" ColumnName="YearID" />
+                <ScalarProperty Name="Year1" ColumnName="Year" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

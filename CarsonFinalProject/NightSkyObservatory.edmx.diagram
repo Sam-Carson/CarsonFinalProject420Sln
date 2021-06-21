@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="faada1d3e8214f7f88cc8dc2adba908a" Name="Diagram1">
+        <EntityTypeShape EntityType="NightSkyObservatoryModel.Fall" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NightSkyObservatoryModel.Meteorite" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NightSkyObservatoryModel.UFO" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NightSkyObservatoryModel.Year" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="NightSkyObservatoryModel.FK_Meteorite_Fall" ManuallyRouted="false" />
+        <AssociationConnector Association="NightSkyObservatoryModel.FK_Meteorite_Year" ManuallyRouted="false" />
+        <AssociationConnector Association="NightSkyObservatoryModel.FK_UFO_Year" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
