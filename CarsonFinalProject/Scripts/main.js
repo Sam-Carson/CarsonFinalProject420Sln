@@ -95,13 +95,13 @@ $(function () {
 
 function GetMeteorites() {
     var select = document.querySelector("#metClassification");
-    var classification = select.options[select.selectedIndex].text;
-    console.log(classification);
+    var id = select.options[select.selectedIndex].text;
+    console.log(id);
 
     $(function () {
         $.ajax({
             type: "GET",
-            url: 'api/nso/meteoriteclassification?id=' + classification,
+            url: 'api/nso/GetMeteoriteByClassification?id=' + id,
             data: '{}',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -173,13 +173,48 @@ function GetYearComparison() {
     $(function () {
         $.ajax({
             type: "GET",
-            url: 'api/nso/year?id=' + id,
+            url: 'api/nso/compareyear?id=' + id,
             data: '{}',
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function (year) {
-                console.log(year)
+            success: function (yearCompare) {
+                console.log(yearCompare)
+                YearSuccess(yearCompare);
             }
         });
     });
+}
+
+function YearSuccess(yearCompare) {
+    // Iterate over the collection of data
+    $.each(yearCompare, function (index, yearCompare) {
+        // Add a row to the Order Detail table
+        YearTable(yearCompare);
+        console.log(yearCompare);
+    });
+}
+
+function YearTable(yearCompare) {
+    // Check if <tbody> tag exists, add one if not
+    if ($("#yearTable tbody").length == 0) {
+        $("#yearTable").append("<tbody></tbody>");
+        console.log(yearCompare);
+    }
+    // Append row to <table>
+    $("#yearTable tbody").append(
+        YearTableRow(yearCompare));
+}
+
+function YearTableRow(yearCompare) {
+    var row =
+        "<tr>" +
+        "<td>" + yearCompare.City + "</td>" +
+        "<td>" + yearCompare.State + "</td>" +
+        "<td>" + yearCompare.Shape + "</td>" +
+        "<td>" + yearCompare.Name + "</td>" +
+        "<td>" + yearCompare.Fall + "</td>" +
+        "<td>" + yearCompare.Year + "</td>"
+    "</td>"
+    "</tr>";
+    return row;
 }

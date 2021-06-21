@@ -72,22 +72,21 @@ namespace CarsonFinalProject.Controllers
         }
 
         [HttpGet]
-        [Route("api/nso/meteoriteclassification")]
-        public IHttpActionResult GetMeteoriteByClassification(string classification)
+        [Route("api/nso/GetMeteoriteByClassification")]
+        public IHttpActionResult GetMeteoriteByClassification(string id)
         {
             try
             {
                 var MeteoriteQuery = from met in db.Meteorites
-                                     join fall in db.Falls on met.FallID equals fall.FallID
+                                     join  fall in db.Falls on met.FallID equals fall.FallID
                                      join year in db.Years on met.YearID equals year.YearID
-                                     where met.Classification == classification
-                                     //group new { ufo, year } by ufo.State into ufoStateGroup
+                                     where met.Classification == id
                                      select new
                                      {
-                                         met.Name,
-                                         fall.Fall1,
-                                         met.Mass,
-                                         year.Year1
+                                         Name = met.Name,
+                                         Fall = fall.Fall1,
+                                         Mass = met.Mass,
+                                         Year = year.Year1
                                      };
                 return Ok(MeteoriteQuery);
             }
@@ -115,5 +114,45 @@ namespace CarsonFinalProject.Controllers
             return Years.Distinct().ToList();
         }
 
-    }
+        /*from met in db.Meteorites
+                                     join  fall in db.Falls on met.FallID equals fall.FallID
+                                     join year in db.Years on met.YearID equals year.YearID
+                                     where met.Classification == id
+                                     select new
+                                     {
+                                         Name = met.Name,
+                                         Fall = fall.Fall1,
+                                         Mass = met.Mass,
+                                         Year = year.Year1*/
+
+        [HttpGet]
+        [Route("api/nso/compareyear")]
+        public IHttpActionResult GetYearComparison(int id)
+        {
+            try
+            {
+                var YearQuery = from year in db.Years
+                                join ufo in db.UFOes on year.YearID equals ufo.YearID
+                                join met in db.Meteorites on year.YearID equals met.YearID
+                                join fall in db.Falls on met.FallID equals fall.FallID
+                                where year.Year1 == id
+                                select new 
+                                {
+                                    City = ufo.City,
+                                    State = ufo.State,
+                                    Shape = ufo.Shape,
+                                    Name = met.Name,
+                                    Fall = fall.Fall1,
+                                    Year = year.Year1
+                                };
+                return Ok(YearQuery);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
+    };
+
 }
+
