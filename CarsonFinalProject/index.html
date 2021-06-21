@@ -61,16 +61,16 @@
                     Select a year in the menu and see how UFO sightings and Meteorites stack up. Year range: 1969-1999
                 </p>
                 <select name="year" class="form-control" id="yearSelect"></select>
+                <select name="state" class="form-control" id="yearStateSelect"></select>
                 <input type="button" value="View Data" class="btn btn-primary" onclick="GetYearComparison()" />
                 <div class="table-container">
-                    <table id="yearTable">
+                    <table id="yearUFOTable">
                         <tr>
                             <th>City</th>
                             <th>State</th>
                             <th>Shape</th>
                             <th>Name</th>
-                            <th>Fall</th>
-                            <th>Year</th>
+                            <th>Mass</th>
                         </tr>
                     </table>
                 </div>

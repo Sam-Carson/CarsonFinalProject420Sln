@@ -15,6 +15,7 @@ $(function () {
         success: function (r) {
             $.each(r, function (key, state) {
                 $('#ufoState').append($('<option></option>').val(state.$id).html(state.State));
+                $('#yearStateSelect').append($('<option></option>').val(state.$id).html(state.State));
             });
         }
     });
@@ -167,14 +168,17 @@ $(function () {
 function GetYearComparison() {
 
     var select = document.querySelector("#yearSelect");
+    var select2 = document.querySelector('#yearStateSelect')
     var id = select.options[select.selectedIndex].text;
+    var id2 = select2.options[select2.selectedIndex].text;
     console.log(id);
+    console.log(id2);
 
     $(function () {
         $.ajax({
             type: "GET",
-            url: 'api/nso/compareyear?id=' + id,
-            data: '{}',
+            url: 'api/nso/compareyear?id=' + id + '&id2=' + id2,
+            data: "",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (yearCompare) {
@@ -196,12 +200,12 @@ function YearSuccess(yearCompare) {
 
 function YearTable(yearCompare) {
     // Check if <tbody> tag exists, add one if not
-    if ($("#yearTable tbody").length == 0) {
-        $("#yearTable").append("<tbody></tbody>");
+    if ($("#yearUFOTable tbody").length == 0) {
+        $("#yearUFOTable").append("<tbody></tbody>");
         console.log(yearCompare);
     }
     // Append row to <table>
-    $("#yearTable tbody").append(
+    $("#yearUFOTable tbody").append(
         YearTableRow(yearCompare));
 }
 
@@ -212,8 +216,7 @@ function YearTableRow(yearCompare) {
         "<td>" + yearCompare.State + "</td>" +
         "<td>" + yearCompare.Shape + "</td>" +
         "<td>" + yearCompare.Name + "</td>" +
-        "<td>" + yearCompare.Fall + "</td>" +
-        "<td>" + yearCompare.Year + "</td>"
+        "<td>" + yearCompare.Mass + "</td>"
     "</td>"
     "</tr>";
     return row;

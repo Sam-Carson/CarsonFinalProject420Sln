@@ -114,38 +114,27 @@ namespace CarsonFinalProject.Controllers
             return Years.Distinct().ToList();
         }
 
-        /*from met in db.Meteorites
-                                     join  fall in db.Falls on met.FallID equals fall.FallID
-                                     join year in db.Years on met.YearID equals year.YearID
-                                     where met.Classification == id
-                                     select new
-                                     {
-                                         Name = met.Name,
-                                         Fall = fall.Fall1,
-                                         Mass = met.Mass,
-                                         Year = year.Year1*/
-
         [HttpGet]
         [Route("api/nso/compareyear")]
-        public IHttpActionResult GetYearComparison(int id)
+        public IHttpActionResult GetYearComparison(string id, string id2)
         {
             try
             {
-                var YearQuery = from year in db.Years
-                                join ufo in db.UFOes on year.YearID equals ufo.YearID
-                                join met in db.Meteorites on year.YearID equals met.YearID
-                                join fall in db.Falls on met.FallID equals fall.FallID
-                                where year.Year1 == id
-                                select new 
-                                {
-                                    City = ufo.City,
-                                    State = ufo.State,
-                                    Shape = ufo.Shape,
-                                    Name = met.Name,
-                                    Fall = fall.Fall1,
-                                    Year = year.Year1
-                                };
-                return Ok(YearQuery);
+                int myInt = Int32.Parse(id);
+
+                var YearUFOQuery = from m in db.Meteorites
+                                   join y in db.Years on m.YearID equals y.YearID
+                                   join ufo in db.UFOes on y.YearID equals ufo.YearID
+                                   where y.Year1 == myInt && ufo.State == id2
+                                   select new
+                                   {
+                                       ufo.City,
+                                       ufo.State,
+                                       ufo.Shape,
+                                       m.Name,
+                                       m.Mass
+                                   };
+                return Ok(YearUFOQuery);                
             }
             catch (Exception)
             {
